@@ -1,4 +1,6 @@
-from flask import Flask
+from flask import Flask, request
+
+from jwt_utils import build_token
 
 app = Flask(__name__)
 
@@ -11,6 +13,16 @@ def hello_world():
 def GetQuizInfo():
 	return {"size": 0, "scores": []}, 200
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def Login():
+	payload = request.get_json()
+	if(payload['password'] == "Vive l'ESIEE !"):
+		token = build_token()
+		return {"token": str(token)}, 200
+	else :
+		return '', 401
+	
 
 if __name__ == "__main__":
     app.run(ssl_context='adhoc')
