@@ -1,4 +1,5 @@
 from flask import Flask, request
+from Answer import Answer
 from Question import Question
 from db_utils import *
 
@@ -31,14 +32,13 @@ def PostQuestion():
 	if(request.headers.get('Authorization')):
 		q1 = Question()
 		q1.json_to_object(request.get_json())
-		#q1.print()
-		q2 = Question("title2", "this is a question 2", 2, "2x34")
-		insert_question_into_bd(q2)
-		select_all_questions()
+		insert_question_into_bd(q1)
 
-		print("******")
-		select_questions_with_title("title2")
-
+		a1 = Answer()
+		answer = request.get_json()['possibleAnswers']
+		for i in range(len(answer)):
+			a1.json_to_object(request.get_json(), i)
+			insert_answer_into_bd(a1)
 		return '', 200
 	else:
 		return '', 401
@@ -51,6 +51,9 @@ def GetQuestionNumber(position):
 		print(row)
 		q1 = Question(row[1], row[2], row[0], row[3])
 		jsoned_question = q1.object_to_json()
+
+		
+
 		return jsoned_question, 200
 	else:
 		return '', 401

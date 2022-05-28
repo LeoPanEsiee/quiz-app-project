@@ -8,12 +8,27 @@ def insert_question_into_bd(question):
 
     question.print()
 
-    insertion_result = cur.execute(
+    cur.execute(
 	f"insert into question (title, text, position, image) values"
 	f"( \"{question.title}\", \"{question.text}\", \"{question.position}\", \"{question.image}\")")
 
-    #print (insertion_result)
     cur.execute("commit")
+
+def insert_answer_into_bd(answer):
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+    answer.print()
+
+    cur.execute(
+    f"insert into answer (question_number, text, isCorrect, answer_number) values"
+    f"( \"{answer.question_number}\", \"{answer.text}\", \"{answer.isCorrect}\", \"{answer.answer_number}\")")
+
+    
+    cur.execute("commit")
+
+
 
 def select_all_questions():
     db_connection = sqlite3.connect('../quiz-db.db')
