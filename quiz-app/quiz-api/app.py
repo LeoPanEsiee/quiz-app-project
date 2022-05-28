@@ -43,6 +43,17 @@ def PostQuestion():
 	else:
 		return '', 401
 
+@app.route('/questions/<position>', methods=['GET'])
+def GetQuestionNumber(position):
+	print("selecting for position")
+	if(request.headers.get('Authorization')):
+		row = select_questions_with_position(position)
+		print(row)
+		q1 = Question(row[1], row[2], row[0], row[3])
+		jsoned_question = q1.object_to_json()
+		return jsoned_question, 200
+	else:
+		return '', 401
 
 if __name__ == "__main__":
     app.run(ssl_context='adhoc')
