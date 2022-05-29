@@ -44,7 +44,7 @@ def PostQuestion():
 			a1.json_to_object(request.get_json(), i)
 			#insert_answer_into_bd(a1)
 		"""
-		
+
 		return '', 200
 	else:
 		return '', 401
@@ -62,6 +62,18 @@ def GetQuestionNumber(position):
 
 		return '', 200
 	else:
+		return '', 401
+
+@app.route('/questions/<position>', methods=['DELETE'])
+def DeleteQuestion(position):
+	if(request.headers.get('Authorization')):
+		if(delete_question_with_position(position) == True):
+			return '', 204
+		else:
+			# Non existing question
+			return '', 404
+	else:
+		# Non authorized
 		return '', 401
 
 if __name__ == "__main__":
