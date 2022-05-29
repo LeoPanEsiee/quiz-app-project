@@ -28,6 +28,7 @@ class Question:
         self.image = request_json['image']
         self.position = request_json['position']
         
+        self.possibleAnswers.clear()
         a1 = Answer()
         for i in range(len(request_json['possibleAnswers'])):
             a1.json_to_object(request_json, i)

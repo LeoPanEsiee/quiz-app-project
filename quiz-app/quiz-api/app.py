@@ -60,16 +60,32 @@ Step 3 : Return the json value of the python object
 """
 @app.route('/questions/<position>', methods=['GET'])
 def GetQuestionNumber(position):
-	if(request.headers.get('Authorization')):
+	entire_question_json = select_question_with_position(position)
+	if(entire_question_json['title'] != ""):
 		return select_question_with_position(position), 200
-	else:
-		return '', 401
+	else :
+		#Question not found
+		return '', 404
 
 @app.route('/questions/<position>', methods=['DELETE'])
 def DeleteQuestion(position):
 	if(request.headers.get('Authorization')):
 		if(delete_question_with_position(position) == True):
 			return '', 204
+		else:
+			# Non existing question
+			return '', 404
+	else:
+		# Non authorized
+		return '', 401
+
+@app.route('/questions/<position>', methods=['PUT'])
+def UpdateQuestion(position):
+	if(request.headers.get('Authorization')):
+		q1 = Question()
+		q1.json_to_object(request.get_json())
+		if(update_question_with_position(q1, position) == True):
+			return '', 200
 		else:
 			# Non existing question
 			return '', 404

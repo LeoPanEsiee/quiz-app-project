@@ -11,9 +11,14 @@ def insert_question_into_bd(question):
     cur = db_connection.cursor()
     cur.execute("begin")
 
+    entire_question_json = select_question_with_position(question.position)
+    #if question already exists, replace and change others positions
+    if(entire_question_json['title'] != ""):
+        move_question_by(cur, question.position, 1)
+
     cur.execute(
-	f"insert into question (title, text, position, image) values"
-	f"( \"{question.title}\", \"{question.text}\", \"{question.position}\", \"{question.image}\")")
+    f"insert into question (title, text, position, image) values"
+    f"( \"{question.title}\", \"{question.text}\", \"{question.position}\", \"{question.image}\")")
 
     cur.execute("commit")
 
@@ -67,6 +72,7 @@ def select_question_with_position(position):
     #Database request should only give 1 result
     select_questions_result = cur.execute(f"select * from question where position = {position}")
     output = select_questions_result
+    q1 = Question()
     for row in output:
         #Create the question from the database values
         q1 = Question(row[1], row[2], row[0], row[3])
@@ -81,7 +87,6 @@ def select_question_with_position(position):
         a1 = Answer(0, col[1], col[2], 0)
         q1.possibleAnswers.append(a1.object_to_json())
 
-    
     return q1.object_to_json()
 
     
@@ -97,14 +102,128 @@ def delete_question_with_position(position):
     select_result = cur.execute(f"SELECT title FROM question WHERE position = {position}")
     output = select_result.fetchall()
 
+    #check if the line exists
     if(output != []):
+        
         cur.execute(f"DELETE FROM question WHERE position = {position}")
         cur.execute(f"DELETE FROM answer WHERE question_number = {position}")
+        move_question_by(cur, position, -1)
         cur.execute("commit")
         return True
     else:
         return False
 
+def update_question_with_position(question, position):
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    select_result = cur.execute(f"SELECT title FROM question WHERE position = {position}")
+    output = select_result.fetchall()
+
+    
+
+    #check if the line exists
+    if(output != []):
+        #if question already exists, replace and change others positions
+        if(position != question.position):
+            change_question_position2(cur,  question, position)
+        else :
+            #UPDATE the question
+            cur.execute(f"UPDATE question "
+            f"SET text = \"{question.text}\", title = \"{question.title}\", image = \"{question.image}\", position = \"{question.position}\"  "
+            f"WHERE position = {position}")
+            
+            #DELETE all the answer from the question
+            cur.execute(f"DELETE FROM answer WHERE question_number = {position}")
+
+            #INSERT all the new answers from the question
+            i = 0
+            for ans in question.possibleAnswers:
+                cur.execute(
+                f"insert into answer (question_number, text, isCorrect, answer_number) values"
+                f"( {position}, \"{ans['text']}\", \"{ans['isCorrect']}\", {i})")
+        
+        
+            
+
+        cur.execute("commit")
+        return True
+    else:
+        return False
+
+
+
+
+
+
+######## ADDITIONAL ##############
+
+"""When adding a question, if a question with the same position already exists :
+the new question gets the position
+the old question is moved
+
+"""
+def move_question_by(cur, original_position, amount):
+
+    #move superior all col by 1
+    cur.execute(f"UPDATE question "
+    f"SET position = position + {amount} "
+    f"WHERE position >= {original_position}")
+
+    
+    cur.execute(f"UPDATE answer "
+    f"SET question_number = question_number + {amount}  "
+    f"WHERE question_number >= {original_position}")
+
+
+def change_question_position2(cur, question, original_position):
+
+
+    insert_with_position(cur, question, original_position, 0)
+
+
+    if(int(original_position) > int(question.position)):
+        cur.execute(f"UPDATE question "
+        f"SET position = position + 1 "
+        f"WHERE position < {int(original_position)} AND position >= {int(question.position)}")
+
+        
+        cur.execute(f"UPDATE answer "
+        f"SET question_number = question_number + 1 "
+        f"WHERE question_number < {int(original_position)} AND question_number >= {int(question.position)}")
+    else:
+        cur.execute(f"UPDATE question "
+        f"SET position = position - 1 "
+        f"WHERE position > {int(original_position)} AND position <= {int(question.position)}")
+
+        
+        cur.execute(f"UPDATE answer "
+        f"SET question_number = question_number - 1 "
+        f"WHERE question_number > {int(original_position)} AND question_number <= {int(question.position)}")
+
+    
+    insert_with_position(cur, question, 0, question.position)
+
+
+
+def insert_with_position(cur, question, src_position, dst_position):
+    #Move all    
+    cur.execute(
+    f"insert into question (title, text, position, image) values"
+    f"( \"{question.title}\", \"{question.text}\", \"{dst_position}\", \"{question.image}\")")
+
+    i = 0
+    for ans in question.possibleAnswers:
+        cur.execute(
+        f"insert into answer (question_number, text, isCorrect, answer_number) values"
+        f"( {dst_position}, \"{ans['text']}\", \"{ans['isCorrect']}\", {i})")
+
+    
+    #DELETE all the answer from the question
+    cur.execute(f"DELETE FROM question WHERE position = {src_position}")
+    cur.execute(f"DELETE FROM answer WHERE question_number = {src_position}")
 
 
 
