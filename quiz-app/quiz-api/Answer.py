@@ -10,12 +10,10 @@ class Answer:
         self.isCorrect = isCorrect
         self.answer_number = answer_number
 
-    def json_to_object(self, json_object_payload, indice):
-        self.question_number = json_object_payload['position']
-
-        answer = json_object_payload['possibleAnswers']
-        self.text = answer[indice]['text']
-        self.isCorrect = answer[indice]['isCorrect']
+    def json_to_object(self, request_json, indice):
+        self.question_number = request_json['position']
+        self.text = request_json['possibleAnswers'][indice]['text']
+        self.isCorrect = request_json['possibleAnswers'][indice]['isCorrect']
         self.answer_number = indice
 
     def object_to_json(self):

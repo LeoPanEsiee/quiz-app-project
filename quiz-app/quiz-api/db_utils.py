@@ -56,12 +56,12 @@ def select_questions_with_position(position):
     db_connection.isolation_level = None
     cur = db_connection.cursor()
 
-    select_result = cur.execute(f"select * from question where position = {position}")
+    select_result = cur.execute(f"select * from question inner join answer on question.position = answer.question_number where position = {position}")
 
     output = select_result.fetchall()
 
     for row in output:
-        return row
+        print(row)
 
 
     
