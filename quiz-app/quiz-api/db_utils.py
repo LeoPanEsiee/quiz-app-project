@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import sqlite3
 from Answer import Answer
 
@@ -85,6 +86,26 @@ def select_question_with_position(position):
 
     
     
+
+
+def delete_question_with_position(position):
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    select_result = cur.execute(f"SELECT title FROM question WHERE position = {position}")
+    output = select_result.fetchall()
+
+    if(output != []):
+        cur.execute(f"DELETE FROM question WHERE position = {position}")
+        cur.execute(f"DELETE FROM answer WHERE question_number = {position}")
+        cur.execute("commit")
+        return True
+    else:
+        return False
+
+
 
 
 
