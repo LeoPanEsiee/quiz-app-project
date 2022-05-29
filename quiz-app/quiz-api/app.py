@@ -27,40 +27,41 @@ def Login():
 		return '', 401
 
 
+"""
+Step 1 : Get the json given in the body of the request
+Step 2 : Put the json's values into the right database's columns 
+"""
 @app.route('/questions', methods=['GET','POST'])
 def PostQuestion():
 	if(request.headers.get('Authorization')):
+		#Get the body(json) of the question
+		#Transform it into our python object
 		q1 = Question()
 		q1.json_to_object(request.get_json())
+		#Put the python object into the database
 		insert_question_into_bd(q1)
 
-		#print("JSON")
-		#print(q1.object_to_json())
-		#q1.print()
-		"""
+		#Get the json of the answers
 		a1 = Answer()
 		answer = request.get_json()['possibleAnswers']
 		for i in range(len(answer)):
+			#Transform it into our python object
 			a1.json_to_object(request.get_json(), i)
-			#insert_answer_into_bd(a1)
-		"""
-		
+			#Put the python object into the database
+			insert_answer_into_bd(a1)
 		return '', 200
 	else:
 		return '', 401
 
+"""
+Step 1 : Request the database to select the question and its answer with the position given in param
+Step 2 : Transform the database result to a python object
+Step 3 : Return the json value of the python object
+"""
 @app.route('/questions/<position>', methods=['GET'])
 def GetQuestionNumber(position):
-	print("selecting for position")
 	if(request.headers.get('Authorization')):
-		row = select_questions_with_position(position)
-		#print(row)
-		#q1 = Question(row[1], row[2], row[0], row[3])
-		#jsoned_question = q1.object_to_json()
-
-
-
-		return '', 200
+		return select_question_with_position(position), 200
 	else:
 		return '', 401
 
