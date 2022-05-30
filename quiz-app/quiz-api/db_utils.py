@@ -4,6 +4,20 @@ from Answer import Answer
 
 from Question import Question
 
+def get_quiz_size():
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    select_result = cur.execute(f"SELECT COUNT(DISTINCT position) FROM question")
+    output = select_result.fetchall()
+    print(output)
+
+    cur.execute("commit")
+
+    return output[0][0]
+
 
 def insert_question_into_bd(question):
     db_connection = sqlite3.connect('../quiz-db.db')
