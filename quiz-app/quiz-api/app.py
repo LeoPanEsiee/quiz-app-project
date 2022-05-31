@@ -4,6 +4,7 @@ from Participation import Participation
 from Question import Question
 from answerSummary import answerSummary
 from db_utils import *
+from flask_cors import CORS
 
 from jwt_utils import build_token
 import json
@@ -11,6 +12,7 @@ import json
 import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
@@ -167,4 +169,4 @@ def DeleteAllParticipations():
 
 
 if __name__ == "__main__":
-    app.run(ssl_context='adhoc')
+    app.run()
