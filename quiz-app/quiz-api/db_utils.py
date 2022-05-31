@@ -2,7 +2,6 @@ from asyncio.windows_events import NULL
 import sqlite3
 from Answer import Answer
 
-import numpy as np
 
 from Question import Question
 
@@ -14,7 +13,6 @@ def get_quiz_size():
 
     select_result = cur.execute(f"SELECT COUNT(DISTINCT position) FROM question")
     output = select_result.fetchall()
-    print(output)
 
     cur.execute("commit")
 
@@ -51,6 +49,28 @@ def insert_answer_into_bd(answer):
     cur.execute("commit")
 
 
+
+def get_question_number():
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    cur.execute(
+    f"select COUNT(*) from question")
+
+    return int(cur.fetchone()[0])
+    
+
+def verify_participation_completion(participation_length):
+    if(get_question_number() == participation_length):
+        return True
+    else:
+        return False
+
+
+
+##### PARTICIPATION ##########
 def insert_participationResult_into_bd(participation):
     db_connection = sqlite3.connect('../quiz-db.db')
     db_connection.isolation_level = None

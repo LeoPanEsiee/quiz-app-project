@@ -97,11 +97,23 @@ def UpdateQuestion(position):
 		return '', 401
 
 
+
+########## PARTICIPATIONS ##########
+
 @app.route('/participations', methods=['GET', 'POST'])
 def PostParticipation():
 	if(request.get_json()):
-		#p1 = Participation()
-		#p1.json_to_object(request.get_json())
+		
+		p1 = Participation()
+		p1.json_to_object(request.get_json())
+		participation_length = len(p1.answers)
+		if (verify_participation_completion(participation_length) == True):
+			print("Correct participation")
+		else:
+			#incorrect participation
+			return '', 400
+
+
 		#player = Participation(request.get_json()['playerName'], request.get_json['answers'])
 		#print(player)
 		"""
