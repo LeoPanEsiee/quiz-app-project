@@ -8,6 +8,8 @@ from db_utils import *
 from jwt_utils import build_token
 import json
 
+import datetime
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -130,6 +132,8 @@ def PostParticipation():
 			p1.score = p1.countCorrect()
 			
 			p1.print()
+
+			insert_participationResult_into_bd(p1)
 			return(p1.object_to_json())
 		else:
 			#incorrect participation

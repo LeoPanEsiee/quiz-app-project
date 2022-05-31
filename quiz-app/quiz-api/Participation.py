@@ -24,6 +24,7 @@ class Participation:
         #answerSummary.json_to_object(request_json)
         self.answers_input = request_json['answers']
         self.answersSummaries.clear()
+        
 
 
     """Returns the json version of the Participation

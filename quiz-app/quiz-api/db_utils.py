@@ -2,6 +2,7 @@ from asyncio.windows_events import NULL
 import sqlite3
 from Answer import Answer
 
+from datetime import datetime
 
 from Question import Question
 
@@ -77,9 +78,15 @@ def insert_participationResult_into_bd(participation):
     cur = db_connection.cursor()
     cur.execute("begin")
 
+    date_time = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+
+    print(date_time)
+    
     cur.execute(
-    f"insert into participation (playerName, score) values"
-    f"( \"{participation.playerName}\", \"{participation.score}\")")
+    f"insert into participation (playerName, score, date) values"
+    f"( \"{participation.playerName}\", {participation.score},  \"{date_time}\")")
+    
+    
 
     cur.execute("commit")		
 
