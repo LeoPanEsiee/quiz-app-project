@@ -1,6 +1,8 @@
 from flask import Flask, request
 from Answer import Answer
+from Participation import Participation
 from Question import Question
+from answerSummary import answerSummary
 from db_utils import *
 
 from jwt_utils import build_token
@@ -93,6 +95,37 @@ def UpdateQuestion(position):
 	else:
 		# Non authorized
 		return '', 401
+
+
+@app.route('/participations', methods=['GET', 'POST'])
+def PostParticipation():
+	if(request.get_json()):
+		#p1 = Participation()
+		#p1.json_to_object(request.get_json())
+		#player = Participation(request.get_json()['playerName'], request.get_json['answers'])
+		#print(player)
+		"""
+		aS1 = answerSummary()
+		size = get_quiz_size()
+		
+		aS1.json_to_object(request.get_json(), i)
+		aS1.print()
+		return '', 200
+	else:
+		return '', 400
+		"""
+		return '', 200
+
+
+@app.route('/participations', methods=['DELETE'])
+def DeleteAllParticipations():
+	if(request.headers.get('Authorization')):
+		delete_all_participations()
+		return '', 204
+	else:
+		# Non authorized
+		return '', 401
+
 
 if __name__ == "__main__":
     app.run(ssl_context='adhoc')

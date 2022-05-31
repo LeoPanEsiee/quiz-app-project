@@ -2,6 +2,8 @@ from asyncio.windows_events import NULL
 import sqlite3
 from Answer import Answer
 
+import numpy as np
+
 from Question import Question
 
 def get_quiz_size():
@@ -49,6 +51,50 @@ def insert_answer_into_bd(answer):
     cur.execute("commit")
 
 
+def insert_participationResult_into_bd(participation):
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    cur.execute(
+    f"insert into participation (playerName, score) values"
+    f"( \"{participation.playerName}\", \"{participation.score}\")")
+
+    cur.execute("commit")		
+
+"""
+Select the correct answer position for the question at indice
+"""
+def select_correct_answer_position(indice):
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    select_result = cur.execute(
+        f"SELECT * FROM answer WHERE question_number = {indice}"
+    )
+
+    for i in select_result:
+        print(i[0])
+
+    cur.execute("commit")
+
+    return select_result
+
+
+def delete_all_participations():
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    cur.execute(f"DELETE FROM participation")
+
+    cur.execute("commit")
+
+
 """
 def select_all_questions():
     db_connection = sqlite3.connect('../quiz-db.db')
@@ -89,7 +135,7 @@ def select_question_with_position(position):
     q1 = Question()
     for row in output:
         #Create the question from the database values
-        q1 = Question(row[1], row[2], row[0], row[3])
+        q1 = Question(row[2], row[3], row[1], row[4])
 
     #make sure the list is empty
     q1.possibleAnswers.clear()
@@ -98,15 +144,13 @@ def select_question_with_position(position):
     select_questions_result = cur.execute(f"select * from answer where question_number = {position}")
     output = select_questions_result.fetchall()
     for col in output:
-        a1 = Answer(0, col[1], col[2], 0)
+        a1 = Answer(0, col[2], col[3], 0)
         q1.possibleAnswers.append(a1.object_to_json())
 
     return q1.object_to_json()
 
     
     
-
-
 def delete_question_with_position(position):
     db_connection = sqlite3.connect('../quiz-db.db')
     db_connection.isolation_level = None
