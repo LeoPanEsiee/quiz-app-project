@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+import json
 import sqlite3
 from Answer import Answer
 
@@ -19,6 +20,27 @@ def get_quiz_size():
 
     return output[0][0]
 
+def get_quiz_info():
+    db_connection = sqlite3.connect('../quiz-db.db')
+    db_connection.isolation_level = None
+    cur = db_connection.cursor()
+    cur.execute("begin")
+
+    select_result = cur.execute(f"SELECT * from participation order by score DESC")
+    output = select_result.fetchall()
+    scores = []
+    for ans in output :
+        name = ans[1]
+        score = ans[2]
+        date = ans[3]
+
+        data = {'playerName' : name, 'score' : score, 'date' : date}
+        data_str = json.dumps(data)
+        data_json = json.loads(data_str)
+        scores.append(data_json)
+
+    
+    return scores
 
 def insert_question_into_bd(question):
     db_connection = sqlite3.connect('../quiz-db.db')

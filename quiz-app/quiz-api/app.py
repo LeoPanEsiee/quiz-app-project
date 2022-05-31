@@ -20,7 +20,8 @@ def hello_world():
 @app.route('/quiz-info', methods=['GET'])
 def GetQuizInfo():
 	size = get_quiz_size()
-	return {"size": size, "scores": []}, 200
+	scores = get_quiz_info()
+	return {"size": size, "scores": scores}, 200
 
 
 @app.route('/login', methods=['GET', 'POST'])
