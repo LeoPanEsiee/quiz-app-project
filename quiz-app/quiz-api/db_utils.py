@@ -32,7 +32,7 @@ def insert_question_into_bd(question):
 
     cur.execute(
     f"insert into question (title, text, position, image) values"
-    f"( \"{question.title}\", \"{question.text}\", \"{question.position}\", \"{question.image}\")")
+    f"( \"{question.title}\", \"{question.text}\", {question.position}, \"{question.image}\")")
 
     cur.execute("commit")
 
@@ -44,7 +44,7 @@ def insert_answer_into_bd(answer):
 
     cur.execute(
     f"insert into answer (question_number, text, isCorrect, answer_number) values"
-    f"( \"{answer.question_number}\", \"{answer.text}\", \"{answer.isCorrect}\", \"{answer.answer_number}\")")
+    f"( {answer.question_number}, \"{answer.text}\", \"{answer.isCorrect}\", {answer.answer_number})")
 
     cur.execute("commit")
 
@@ -93,15 +93,14 @@ def select_correct_answer_position(indice):
     cur.execute("begin")
 
     select_result = cur.execute(
-        f"SELECT * FROM answer WHERE question_number = {indice}"
+        f"SELECT * FROM answer WHERE question_number = {indice} AND isCorrect = 'True'"
     )
 
-    for i in select_result:
-        print(i[0])
+    good_answer = 0
+    for out in select_result:
+        good_answer = int(out[4])
 
-    cur.execute("commit")
-
-    return select_result
+    return good_answer
 
 
 def delete_all_participations():

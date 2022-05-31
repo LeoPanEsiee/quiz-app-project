@@ -24,7 +24,7 @@ class Answer:
         self.question_number = request_json['position']
         self.text = request_json['possibleAnswers'][indice]['text']
         self.isCorrect = request_json['possibleAnswers'][indice]['isCorrect']
-        self.answer_number = indice
+        self.answer_number = indice + 1
 
     """Returns the json version of the Answer
     In the database, isCorrect is True

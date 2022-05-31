@@ -32,7 +32,7 @@ class Question:
         a1 = Answer()
         for i in range(len(request_json['possibleAnswers'])):
             a1.json_to_object(request_json, i)
-            self.possibleAnswers.append({ "text" : a1.text, "isCorrect" : a1.isCorrect })
+            self.possibleAnswers.append({ "text" : a1.text, "isCorrect" : int(a1.isCorrect) })
 
 
 

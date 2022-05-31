@@ -1,5 +1,6 @@
 import json
 from Answer import Answer
+from answerSummary import answerSummary
 
 class Participation:
     """Participation constructor
@@ -7,21 +8,28 @@ class Participation:
         takes params : player_name : le nom du joueur qui poste son questionnaire
         answers : la liste des positions de réponses choisies dans l’ordre des questions du quiz
     """
-    def __init__(self, playerName = "", answers = []):
+    def __init__(self, playerName = "", score = 0, answersSummaries = [], date = ""):
         self.playerName = playerName
-        self.answers = answers
+        self.score = score
+
+        self.answersSummaries = answersSummaries
+        self.date = date
 
     
     """Put the json data into the python Participation
     """
     def json_to_object(self, request_json):
         self.playerName = request_json['playerName']
-        self.answers = request_json['answers']
+
+        #answerSummary.json_to_object(request_json)
+        self.answers_input = request_json['answers']
+        self.answersSummaries.clear()
 
 
     """Returns the json version of the Participation
     """
     def object_to_json(self):
+        return {"playerName" : self.playerName, "score" : self.score , "answersSummaries" : self.answersSummaries}
         """
         answersSummaries : [
         {
@@ -43,10 +51,19 @@ class Participation:
         """
         return data_json
 
+    def countCorrect(self):
+        sum = 0
+        for ans in self.answersSummaries:
+            if(ans['wasCorrect'] == True):
+                sum += 1
+        return sum
+
     def print(self):
         print(
             "-------------------------" \
             + "\n playerName : " + self.playerName \
-            + "\n answers : " + str(self.answers) \
+            + "\n score : " + str(self.score) \
             + "\n-------------------------"    
-            )
+        )
+        print("answersSummaries : ")
+        print(self.answersSummaries)

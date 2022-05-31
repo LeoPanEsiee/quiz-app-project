@@ -6,6 +6,7 @@ from answerSummary import answerSummary
 from db_utils import *
 
 from jwt_utils import build_token
+import json
 
 app = Flask(__name__)
 
@@ -103,12 +104,33 @@ def UpdateQuestion(position):
 @app.route('/participations', methods=['GET', 'POST'])
 def PostParticipation():
 	if(request.get_json()):
-		
+
 		p1 = Participation()
 		p1.json_to_object(request.get_json())
-		participation_length = len(p1.answers)
+		participation_length = len(p1.answers_input)
 		if (verify_participation_completion(participation_length) == True):
 			print("Correct participation")
+
+
+			i = 1
+			for ans in p1.answers_input:
+				answerIsCorrect = False
+				if( select_correct_answer_position(i) == ans):
+					answerIsCorrect = True
+
+				data = {'correctAnswerPosition' : select_correct_answer_position(i), 'wasCorrect': answerIsCorrect}
+				data_str = json.dumps(data)
+				data_json = json.loads(data_str)
+
+				p1.answersSummaries.append(data_json)
+				i += 1
+
+
+			print(str(p1.countCorrect()))
+			p1.score = p1.countCorrect()
+			
+			p1.print()
+			return(p1.object_to_json())
 		else:
 			#incorrect participation
 			return '', 400
