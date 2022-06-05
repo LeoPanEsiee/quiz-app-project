@@ -1,6 +1,15 @@
 <template>
     <img v-if="question.image" :src="question.image" />
-    <a @click="$emit('answer-selected', 2)">La réponse D</a>
+    <h2>{{question.questionTitle}}</h2>
+    <h3>{{question.questionText}}</h3>
+    <p>Veuillez selectionner une réponse :</p>
+    <ul>
+        <li v-for="item in question.possibleAnswers" :key="item.text">
+            <a @click="$emit('answer-selected', 2)">{{item}}</a>
+        </li>
+    </ul>
+   
+    
 </template>
 
 <script>
