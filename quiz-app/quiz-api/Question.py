@@ -1,5 +1,5 @@
 # Exemple de création de classe en python
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from cgitb import text
 import json
 from Answer import Answer

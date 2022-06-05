@@ -1,29 +1,35 @@
 <template>
   <h1>New Quiz Page</h1>
   <p>Saisissez votre nom :</p>
-  <input type="text" placeholder="username" v-model="username">
+  <input type="text" v-model="username">
   <p>{{ username }}</p>
   <br>
-  <button>GO!</button>
-
-
+  <button @click="launchNewQuiz">GO!</button>
 </template>
 
 <script>
-
+//import participationStorageService from "@/ParticipationStorageService";
 
 export default {
   name: "NewQuizPage",
   data() {
     return {
+      username : ''
     };
   },
-  async created() {
-    console.log("Composant New Quiz page 'Created'")
-  }
+  methods:{
+    launchNewQuiz(){
+      // participationStorageService.savePlayerName(this.username);
+      console.log("Launch new quiz with", this.username);
+      // const playerName = participationStorageService.getPlayerName();
+      this.$router.push('/questions');
+    },
+  },
+  // async created() {
+  //   console.log("Composant New Quiz page 'Created'")
+  // }
 };
 </script>
-
 
 <style>
 </style>

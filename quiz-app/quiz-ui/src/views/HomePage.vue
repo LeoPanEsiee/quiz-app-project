@@ -11,7 +11,6 @@
 <script>
 import quizApiService from "@/services/QuizApiService";
 
-
 export default {
   name: "HomePage",
   data() {
