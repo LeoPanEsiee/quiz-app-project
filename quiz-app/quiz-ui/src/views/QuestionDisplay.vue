@@ -1,11 +1,11 @@
 <template>
-    <img v-if="question.image" :src="question.image" />
+    <img v-if="question.questionImage" :src="question.questionImage" />
     <h2>{{question.questionTitle}}</h2>
     <h3>{{question.questionText}}</h3>
     <p>Veuillez selectionner une réponse :</p>
     <ul>
-        <li v-for="item in question.possibleAnswers" :key="item.text">
-            <a @click="$emit('answer-selected', 2)">{{item}}</a>
+        <li v-for="answer in question.possibleAnswers" :key="answer">
+            <a @click="$emit('answer-selected', question.possibleAnswers.indexOf(answer)+1)">{{answer}}</a>
         </li>
     </ul>
    
@@ -25,6 +25,11 @@ export default {
         return {
         };
     }
+    // methods: {
+    //     answerSelected(event) {
+    //         this.$emit('answer-selected', question.possibleAnswers);
+    //     }
+    // }
 };
 </script>
 

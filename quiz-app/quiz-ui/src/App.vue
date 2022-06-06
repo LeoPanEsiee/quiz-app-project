@@ -10,7 +10,6 @@
 
       <nav>
         <RouterLink to="/admin">Admin</RouterLink>
-        <RouterLink to="/manager">Manager</RouterLink>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
