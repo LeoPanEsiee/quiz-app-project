@@ -143,19 +143,6 @@ def PostParticipation():
 			return '', 400
 
 
-		#player = Participation(request.get_json()['playerName'], request.get_json['answers'])
-		#print(player)
-		"""
-		aS1 = answerSummary()
-		size = get_quiz_size()
-		
-		aS1.json_to_object(request.get_json(), i)
-		aS1.print()
-		return '', 200
-	else:
-		return '', 400
-		"""
-		return '', 200
 
 
 @app.route('/participations', methods=['DELETE'])

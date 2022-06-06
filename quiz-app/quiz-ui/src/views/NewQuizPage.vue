@@ -10,7 +10,10 @@
 <script>
 //import participationStorageService from "@/ParticipationStorageService";
 
+import ParticipationStorageService from '../services/ParticipationStorageService';
+
 export default {
+
   name: "NewQuizPage",
   data() {
     return {
@@ -19,8 +22,8 @@ export default {
   },
   methods:{
     launchNewQuiz(){
-      // participationStorageService.savePlayerName(this.username);
       console.log("Launch new quiz with", this.username);
+      ParticipationStorageService.savePlayerName(this.username);
       // const playerName = participationStorageService.getPlayerName();
       // this.$router.push('/questions');
       this.$router.push('/manager');

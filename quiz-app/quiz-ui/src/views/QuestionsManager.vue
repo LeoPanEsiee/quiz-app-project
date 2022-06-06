@@ -6,6 +6,7 @@
 <script> 
 import QuestionDisplay from "@/views/QuestionDisplay.vue";
 import quizApiService from "@/services/QuizApiService";
+import ParticipationStorageService from '../services/ParticipationStorageService';
 
 export default {
     data() {
@@ -27,6 +28,7 @@ export default {
     async created() {
         console.log("Composant created 'Created'")
         var quiz = await quizApiService.getQuizInfo();
+        console.log(quiz.data);
         this.totalNumberOfQuestion = quiz.data.size;
         var quizQuestion = await quizApiService.getQuestion(this.currentQuestionPosition);
         this.loadQuestionByPosition(quizQuestion.data.position);
@@ -36,11 +38,9 @@ export default {
             var quizQuestion = await quizApiService.getQuestion(position);
             var answers = [];
             var possibleAnswers = Object.entries(quizQuestion.data.possibleAnswers);
-            console.log(possibleAnswers)
             for(var [key, val] of possibleAnswers)
                 answers.push(val.text);
             this.currentQuestion.questionImage = quizQuestion.data.image;
-            console.log(this.currentQuestion.questionImage)
             this.currentQuestion.questionTitle = quizQuestion.data.title;
             this.currentQuestion.questionText = quizQuestion.data.text;
             this.currentQuestion.possibleAnswers = answers;
@@ -66,15 +66,16 @@ export default {
 
             // Changement de question
             if(this.currentQuestionPosition == this.totalNumberOfQuestion) {
-                this.endQuiz(this.currentScore);
+                this.endQuiz();
             }
             else {
                 this.currentQuestionPosition += 1;
                 this.loadQuestionByPosition(this.currentQuestionPosition);
             }
         },
-        async endQuiz(score) {
-            console.log("Composant endQuiz 'Created'")
+        async endQuiz() {
+            ParticipationStorageService.saveParticipationScore(this.currentScore);
+            console.log("Composant endQuiz 'Created'");
             this.$router.push('/scores');
         }
     }
