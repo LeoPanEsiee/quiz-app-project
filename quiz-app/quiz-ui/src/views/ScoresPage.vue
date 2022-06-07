@@ -5,13 +5,14 @@
   -->
   <button @click="returnHome">Home</button>
   <p>Bravo, votre score est de : {{this.currentScore}}</p>
+  
   <table>
       <thead>
           <td>Date</td>
           <td>Player Name</td>
           <td>Score</td>
       </thead>
-      <tbody v-for="score in scores" :key="score.Date">
+      <tbody v-for="score in scores">
         <tr>
           <td><p>{{score.date}}</p></td>
           <td><p>{{score.playerName}}</p></td>
@@ -19,25 +20,26 @@
         </tr>
       </tbody>
   </table>
-  <!-- <table>
+  <br>
+  <table>
       <thead>
           <td>Date</td>
           <td>Player Name</td>
           <td>Score</td>
       </thead>
-      <tbody v-for="score in scores" :key="score.Date">
-        <tr>
+      <tbody v-for="score in scores">
+        <tr v-if="score.playerName === this.username">
           <td><p>{{score.date}}</p></td>
           <td><p>{{score.playerName}}</p></td>
           <td><p>{{score.score}}</p></td>
         </tr>
       </tbody>
-  </table> -->
+  </table>
 </template>
 
 <script>
-import ParticipationStorageService from '../services/ParticipationStorageService';
 import quizApiService from "@/services/QuizApiService";
+import participationStorageService from '../services/ParticipationStorageService';
 
 export default {
   name: "Scores",
@@ -47,6 +49,7 @@ export default {
       currentScore : 0,
       participationData : 0,
       scores : []
+
     };
   },
   
@@ -56,23 +59,17 @@ export default {
 
   methods:{
     async returnHome() {
-        this.$router.push('/');
-    },      ///console.log(ParticipationStorageService.getParticipationScore())
-    async participation() {
+      this.$router.push('/');
+    }, 
+    async participation() { 
       var participation = await quizApiService.getQuizInfo();
-    //   console.log("participationData : ");
-    //   console.log(participation.data);
-      this.currentScore = ParticipationStorageService.getParticipationScore();
+      this.currentScore = participationStorageService.getParticipationScore();
+      this.username = participationStorageService.getPlayerName();
 
       for(var score of participation.data.scores) {
-        //   console.log("Score : ")
-        //   console.log(score)
-          this.scores.push(score)
-        //   console.log("val : " + val)
+        this.scores.push(score);
       }
-    //   console.log(this.scores);
-      //var quiz = await quizApiService.getQuizInfo();
-      //console.log(quiz.data);
+
     },
   }
 };

@@ -7,7 +7,7 @@
 <script> 
 import QuestionDisplay from "@/views/QuestionDisplay.vue";
 import quizApiService from "@/services/QuizApiService";
-import ParticipationStorageService from '../services/ParticipationStorageService';
+import participationStorageService from '../services/ParticipationStorageService';
 // import ScoresPage from "@/views/ScoresPage.vue";
 
 // export {
@@ -26,7 +26,8 @@ export default {
             currentQuestionPosition : 1,
             totalNumberOfQuestion : 0,
             currentScore : 0,
-            listAnswersSelected : []
+            listAnswersSelected : [],
+            currentName : ""
         };
     },
     components: {
@@ -72,7 +73,7 @@ export default {
             }
 
             // Changement de question
-            if(this.currentQuestionPosition == this.totalNumberOfQuestion) {
+            if(this.currentQuestionPosition >= this.totalNumberOfQuestion) {
                 this.endQuiz();
             }
             else {
@@ -80,34 +81,22 @@ export default {
                 this.loadQuestionByPosition(this.currentQuestionPosition);
             }
         },
+
         async endQuiz() {
-            ParticipationStorageService.saveParticipationScore(this.currentScore);
+            participationStorageService.saveParticipationScore(this.currentScore);
             console.log("Composant endQuiz 'Created'");
+
+            console.log(this.listAnswersSelected)
+            this.currentName = participationStorageService.getPlayerName();
+
+            var body = {playerName : this.currentName, answers : this.listAnswersSelected};
+
+            var bodyStr = JSON.stringify(body);
+            var res = await quizApiService.postParticipation(bodyStr);
+
             this.$router.push('/scores');
-            // console.log(this.listAnswersSelected);
-            // var name = ParticipationStorageService.getPlayerName();
-            
-            // const requestOptions = {
-            //     method : "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body : JSON.parse({
-            //         playername : name,
-            //         answers : this.listAnswersSelected
-            //         })
-            // }
-
-            // console.log(requestOptions)
-
-            // fetch("http://127.0.0.1:5000/participations", requestOptions)
-            // .then(response => response.json());
         }
     },
-    // emits: ['currentScore'],
-    // props: {
-    //     score: {
-    //         type: Number
-    //     }
-    // }
 };
 </script>
 

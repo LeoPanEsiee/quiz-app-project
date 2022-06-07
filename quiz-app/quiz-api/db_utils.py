@@ -85,6 +85,7 @@ def get_question_number():
     
 
 def verify_participation_completion(participation_length):
+    print("participation len : " + str(participation_length))
     if(get_question_number() == participation_length):
         return True
     else:

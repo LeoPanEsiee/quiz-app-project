@@ -140,7 +140,11 @@ def PostParticipation():
 			return(p1.object_to_json())
 		else:
 			#incorrect participation
+			print("incorrect participation")
 			return '', 400
+	else:
+		print("incorrect json")
+		return '', 401
 
 
 
@@ -156,4 +160,4 @@ def DeleteAllParticipations():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run()	

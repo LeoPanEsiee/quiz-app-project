@@ -16,5 +16,14 @@ export default {
     },
     getParticipationScore() {
         return window.localStorage.getItem('participationScore');
+    },
+
+    saveScores(scores) {
+        window.localStorage.setItem("scores", participationScore);
+    },
+    getScore() {
+        return window.localStorage.getItem('scores');
     }
-  };
+
+
+};
