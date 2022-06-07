@@ -140,22 +140,13 @@ def PostParticipation():
 			return(p1.object_to_json())
 		else:
 			#incorrect participation
+			print("incorrect participation")
 			return '', 400
-
-
-		#player = Participation(request.get_json()['playerName'], request.get_json['answers'])
-		#print(player)
-		"""
-		aS1 = answerSummary()
-		size = get_quiz_size()
-		
-		aS1.json_to_object(request.get_json(), i)
-		aS1.print()
-		return '', 200
 	else:
-		return '', 400
-		"""
-		return '', 200
+		print("incorrect json")
+		return '', 401
+
+
 
 
 @app.route('/participations', methods=['DELETE'])
@@ -169,4 +160,4 @@ def DeleteAllParticipations():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run()	

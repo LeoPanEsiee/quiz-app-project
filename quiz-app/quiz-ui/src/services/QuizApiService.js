@@ -29,10 +29,12 @@ export default {
   },
   getQuizInfo() {
     //return quizInfo.data;
-
     return this.call("get", "quiz-info");
   },
   getQuestion(position) {
-    // not implemented
+    return this.call("get", "questions/" + position);
+  },
+  postParticipation(body) {
+    return this.call("post", "participations", body);
   }
 };
