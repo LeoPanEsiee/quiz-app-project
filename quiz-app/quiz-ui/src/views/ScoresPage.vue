@@ -6,47 +6,69 @@
   -->
   <p>Bravo, votre score est de : {{ this.currentScore }}</p>
 
-  <table>
-    <thead>
-      <td>Date</td>
-      <td>Player Name</td>
-      <td>Score</td>
-    </thead>
-    <tbody v-for="score in scores">
-      <tr>
-        <td>
-          <p>{{ score.date }}</p>
-        </td>
-        <td>
-          <p>{{ score.playerName }}</p>
-        </td>
-        <td>
-          <p>{{ score.score }}</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <br>
-  <table>
-    <thead>
-      <td>Date</td>
-      <td>Player Name</td>
-      <td>Score</td>
-    </thead>
-    <tbody v-for="score in scores">
-      <tr v-if="score.playerName === this.username">
-        <td>
-          <p>{{ score.date }}</p>
-        </td>
-        <td>
-          <p>{{ score.playerName }}</p>
-        </td>
-        <td>
-          <p>{{ score.score }}</p>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="container">
+    <div>
+      <table>
+        <thead>
+          <td><b>GLOBAL</b></td>
+        </thead>
+        <tbody>
+          <tr><br></tr>
+          <table border = "1">
+            <thead>
+              <td><b>Date</b></td>
+              <td><b>Player Name</b></td>
+              <td><b>Score</b></td>
+            </thead>
+            <tbody v-for="score in scores">
+              <tr>
+                <td>
+                  <p>{{ score.date }}</p>
+                </td>
+                <td>
+                  <p>{{ score.playerName }}</p>
+                </td>
+                <td>
+                  <p>{{ score.score }}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <table>
+        <thead>
+          <td><b>PLAYER</b></td>
+        </thead>
+        <tbody>
+          <tr><br></tr>
+          <table border = "1">
+            <thead>
+              <td><b>Date</b></td>
+              <td><b>Player Name</b></td>
+              <td><b>Score</b></td>
+            </thead>
+            <tbody v-for="score in scores">
+              <tr v-if="score.playerName === this.username">
+                <td>
+                  <p>{{ score.date }}</p>
+                </td>
+                <td>
+                  <p>{{ score.playerName }}</p>
+                </td>
+                <td>
+                  <p>{{ score.score }}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -88,4 +110,22 @@ export default {
 </script>
 
 <style>
+table {
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 500px;
+}
+
+.container {
+  align-content: center;
+  display: flex;
+}
+
+.container div {
+  align-items: center;
+  margin: 50px;
+}
+
 </style>

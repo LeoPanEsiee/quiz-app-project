@@ -11,7 +11,7 @@
 
   <body>
     <img alt="pokeball" class="logo" src="@/assets/pokeball.png" width="120" style="margin-left: 0px;" />
-    <img alt="avatar" class="logo" src="@/assets/avatar.png" width="120" />
+    <img alt="mew" class="logo" src="@/assets/mew.png" width="120" />
     <img alt="eevee" class="logo" src="@/assets/eevee.png" width="120" />
     <img alt="pikachu" class="logo" src="@/assets/pikachu.png" width="120" />
     <img alt="snorlax" class="logo" src="@/assets/snorlax.png" width="120" />
