@@ -1,19 +1,25 @@
 <script setup>
-  import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
   <header>
 
     <!-- <div class="wrapper"> -->
-      <nav>
-        <ul>
-          <li><RouterLink class ="routers" id="admin" to="/admin">Admin</RouterLink></li>
-          <li><img alt="Vue logo" class="logo" src="@/assets/International_Pokémon_logo.svg.png" width="120" /></li>
-          <li><RouterLink class="routers" id="about" to="/about">About</RouterLink></li>
-          <li><RouterLink class ="routers" id="home" to="/">Home</RouterLink></li>
-        </ul>
-      </nav>
+    <nav>
+      <ul>
+        <li>
+          <RouterLink class="routers" id="admin" to="/admin"><b>ADMIN</b></RouterLink>
+        </li>
+        <li><img alt="Vue logo" class="logo" src="@/assets/International_Pokémon_logo.svg.png" width="120" /></li>
+        <li>
+          <RouterLink class="routers" id="about" to="/about"><b>ABOUT</b></RouterLink>
+        </li>
+        <li>
+          <RouterLink class="routers" id="home" to="/"><b>HOME</b></RouterLink>
+        </li>
+      </ul>
+    </nav>
     <!-- </div> -->
 
   </header>
@@ -57,7 +63,7 @@ header li {
 
 #admin:hover {
   color: #fff;
-  background-color:green;
+  background-color: green;
 }
 
 #home {
@@ -71,7 +77,7 @@ header li {
 
 #home:hover {
   color: #fff;
-  background-color:red;
+  background-color: red;
 }
 
 #about {
@@ -85,11 +91,10 @@ header li {
 
 #about:hover {
   color: #fff;
-  background-color:cornflowerblue;
+  background-color: cornflowerblue;
 }
 
 img {
   margin-left: 120px;
 }
-
 </style>

@@ -4,7 +4,7 @@
     <!-- <p @input="$emit('current-score', currentScore)">{{currentScore}}</p> -->
 </template>
 
-<script> 
+<script>
 import QuestionDisplay from "@/views/QuestionDisplay.vue";
 import quizApiService from "@/services/QuizApiService";
 import participationStorageService from '../services/ParticipationStorageService';
@@ -18,16 +18,16 @@ export default {
     data() {
         return {
             currentQuestion: {
-                questionImage : "",
-                questionTitle : "No title",
-                questionText : "No text",
-                possibleAnswers : []
+                questionImage: "",
+                questionTitle: "No title",
+                questionText: "No text",
+                possibleAnswers: []
             },
-            currentQuestionPosition : 1,
-            totalNumberOfQuestion : 0,
-            currentScore : 0,
-            listAnswersSelected : [],
-            currentName : ""
+            currentQuestionPosition: 1,
+            totalNumberOfQuestion: 0,
+            currentScore: 0,
+            listAnswersSelected: [],
+            currentName: ""
         };
     },
     components: {
@@ -45,7 +45,7 @@ export default {
             var quizQuestion = await quizApiService.getQuestion(position);
             var answers = [];
             var possibleAnswers = Object.entries(quizQuestion.data.possibleAnswers);
-            for(var [key, val] of possibleAnswers)
+            for (var [key, val] of possibleAnswers)
                 answers.push(val.text);
             this.currentQuestion.questionImage = quizQuestion.data.image;
             this.currentQuestion.questionTitle = quizQuestion.data.title;
@@ -56,24 +56,24 @@ export default {
             var quizQuestion = await quizApiService.getQuestion(this.currentQuestionPosition);
             var possibleAnswers = quizQuestion.data.possibleAnswers;
             var correctAnswer = 0;
-            
+
             this.listAnswersSelected.push(position);
 
             // Verifie la reponse
             for (let i = 0; i < possibleAnswers.length; i++) {
-                if(possibleAnswers[i].isCorrect == true) {
+                if (possibleAnswers[i].isCorrect == true) {
                     correctAnswer = i;
                     console.log("position de la bonne rep : " + i);
                 }
             }
-            
+
             // Incremente score si correcte
-            if( (position - 1) == correctAnswer){
+            if ((position - 1) == correctAnswer) {
                 this.currentScore += 1;
             }
 
             // Changement de question
-            if(this.currentQuestionPosition >= this.totalNumberOfQuestion) {
+            if (this.currentQuestionPosition >= this.totalNumberOfQuestion) {
                 this.endQuiz();
             }
             else {
@@ -89,7 +89,7 @@ export default {
             console.log(this.listAnswersSelected)
             this.currentName = participationStorageService.getPlayerName();
 
-            var body = {playerName : this.currentName, answers : this.listAnswersSelected};
+            var body = { playerName: this.currentName, answers: this.listAnswersSelected };
 
             var bodyStr = JSON.stringify(body);
             var res = await quizApiService.postParticipation(bodyStr);

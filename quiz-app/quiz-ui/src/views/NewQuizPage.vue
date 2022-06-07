@@ -5,6 +5,20 @@
   <p>{{ username }}</p>
   <br>
   <button @click="launchNewQuiz">GO!</button>
+
+
+  <br> <br> <br> <br>
+
+  <body>
+    <img alt="pokeball" class="logo" src="@/assets/pokeball.png" width="120" style="margin-left: 0px;" />
+    <img alt="avatar" class="logo" src="@/assets/avatar.png" width="120" />
+    <img alt="eevee" class="logo" src="@/assets/eevee.png" width="120" />
+    <img alt="pikachu" class="logo" src="@/assets/pikachu.png" width="120" />
+    <img alt="snorlax" class="logo" src="@/assets/snorlax.png" width="120" />
+    <img alt="pokeball" class="logo" src="@/assets/pokeball.png" width="120" />
+  </body>
+
+
 </template>
 
 <script>
@@ -17,11 +31,11 @@ export default {
   name: "NewQuizPage",
   data() {
     return {
-      username : ''
+      username: ''
     };
   },
-  methods:{
-    launchNewQuiz(){
+  methods: {
+    launchNewQuiz() {
       console.log("Launch new quiz with", this.username);
       ParticipationStorageService.savePlayerName(this.username);
       // const playerName = participationStorageService.getPlayerName();
