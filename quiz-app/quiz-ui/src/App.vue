@@ -8,7 +8,7 @@
     <!-- <div class="wrapper"> -->
       <nav>
         <ul>
-          <li><RouterLink class ="routers color" id="admin" to="/admin">Admin</RouterLink></li>
+          <li><RouterLink class ="routers" id="admin" to="/admin">Admin</RouterLink></li>
           <li><img alt="Vue logo" class="logo" src="@/assets/International_Pokémon_logo.svg.png" width="120" /></li>
           <li><RouterLink class="routers" id="about" to="/about">About</RouterLink></li>
           <li><RouterLink class ="routers" id="home" to="/">Home</RouterLink></li>
@@ -21,7 +21,7 @@
 </template>
 
 <style>
-body {
+header {
   color: darkblue;
   text-align: center;
 }

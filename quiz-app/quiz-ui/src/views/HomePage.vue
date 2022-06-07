@@ -2,7 +2,8 @@
   <head>
     <title>Home</title>
   </head>
-  <h1>Home page</h1>
+  <h1>Home Page</h1>
+  
   <router-link to="/start-new-quiz-page">Démarrer le quiz !</router-link>
   
   <h2>Classement</h2>
@@ -35,6 +36,6 @@ export default {
 };
 </script>
 
-
 <style>
+
 </style>
