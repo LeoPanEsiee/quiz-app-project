@@ -1,4 +1,7 @@
 <template>
+  <head>
+    <title>Home</title>
+  </head>
   <h1>Home page</h1>
   <router-link to="/start-new-quiz-page">Démarrer le quiz !</router-link>
 
